@@ -9,8 +9,15 @@
     z-index: 1000;
 
     .logo {
-        img {
-            max-height: 40px; // Adjust size as needed
+        .logo-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+
+            img {
+                max-height: 40px; // Adjust size as needed
+            }
         }
     }
 }
