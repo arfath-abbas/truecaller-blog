@@ -9,15 +9,16 @@
 
     <div class="post-list">
         <div *ngFor="let post of displayedPosts" class="post-card">
-            <h2>{{ post.title }}</h2>
-            <p>{{ post.date ? (post.date | date:'short') : 'No Date Available' }}</p>
-            <img *ngIf="post.post_thumbnail" [src]="post.post_thumbnail.URL" alt="Post Thumbnail">
-            <p *ngIf="post.categories && post.categories.length">{{ post.categories.join(', ') }}</p>
-            <p *ngIf="!post.categories || !post.categories.length"></p>
-            <button class="btn btn-primary" (click)="viewPost(post.slug)">Read More</button>
+            <a [routerLink]="['/post', post.slug]" class="post-card-link">
+                <div class="post-category" *ngIf="post.categories">
+                    <span *ngFor="let key of getCategoryKeys(post.categories)">{{ post.categories[key].name }}</span>
+                </div>
+                <img *ngIf="post.post_thumbnail" [src]="post.post_thumbnail.URL" alt="Post Thumbnail">
+                <h2>{{ post.title }}</h2>
+                <p>{{ post.date | timeAgo }}</p>
+            </a>
         </div>
     </div>
-
     <div class="dropdown-space"></div>
 
     <nav aria-label="Page navigation example">

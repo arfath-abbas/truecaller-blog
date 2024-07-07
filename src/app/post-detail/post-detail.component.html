@@ -1,6 +1,11 @@
-<div *ngIf="post">
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.date | date:'short' }} by {{ post.author.name }}</p>
-    <img *ngIf="post.featured_image" [src]="post.featured_image" alt="Featured Image">
-    <div [innerHTML]="post.content"></div>
+<div class="post-container" *ngIf="post">
+    <img *ngIf="post.featured_image" [src]="post.featured_image" alt="Featured Image" class="featured-image">
+    <div class="post-content">
+        <h1 class="post-title">{{ post.title }}</h1>
+        <div class="post-meta">
+            <span class="author-name">{{ post.author.name }}</span>
+            <span class="post-date">{{ post.date | date:'short' }}</span>
+        </div>
+        <div [innerHTML]="post.content" class="post-body"></div>
+    </div>
 </div>
