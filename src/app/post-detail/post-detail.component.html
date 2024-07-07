@@ -1,0 +1,7 @@
+<div class="container" *ngIf="post">
+    <h1>{{ post.title }}</h1>
+    <img *ngIf="post.featured_image" [src]="post.featured_image" alt="Featured Image">
+    <p>{{ post.date | date:'short' }} by {{ post.author.name }}</p>
+    <div [innerHTML]="post.content"></div>
+</div>
+<div *ngIf="!post">Loading...</div>

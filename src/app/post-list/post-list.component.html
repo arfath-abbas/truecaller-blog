@@ -1,0 +1,17 @@
+<div class="container">
+    <h1>Truecaller Blog</h1>
+    <select [(ngModel)]="selectedCategory" (change)="onCategoryChange($event)">
+        <option *ngFor="let category of categories" [value]="category.slug">{{ category.name }}</option>
+    </select>
+
+    <div class="post-list">
+        <div *ngFor="let post of posts" class="post-card">
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.date ? (post.date | date:'short') : 'No Date Available' }}</p>
+            <img *ngIf="post.post_thumbnail" [src]="post.post_thumbnail.URL" alt="Post Thumbnail">
+            <p *ngIf="post.categories && post.categories.length">{{ post.categories.join(', ') }}</p>
+            <p *ngIf="!post.categories || !post.categories.length">No categories</p>
+            <button (click)="viewPost(post.slug)">Read More</button>
+        </div>
+    </div>
+</div>
