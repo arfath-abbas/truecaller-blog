@@ -1,23 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { PostService } from '../post.service';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-post-detail',
-  standalone: true,
-  imports: [CommonModule, HttpClientModule],
   templateUrl: './post-detail.component.html',
-  styleUrls: ['./post-detail.component.scss']
+  styleUrls: ['./post-detail.component.scss'],
+  standalone: true,
+  imports: [CommonModule, DatePipe]
 })
 export class PostDetailComponent implements OnInit {
   post: any;
 
-  constructor(
-    private route: ActivatedRoute,
-    private postService: PostService
-  ) { }
+  constructor(private route: ActivatedRoute, private postService: PostService) { }
 
   ngOnInit(): void {
     const slug = this.route.snapshot.paramMap.get('slug');

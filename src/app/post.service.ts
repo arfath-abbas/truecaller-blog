@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,12 @@ export class PostService {
   constructor(private http: HttpClient) { }
 
   getPosts(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/posts/?fields=slug,categories,post_thumbnail,title,date&number=20&page=1`);
+    return this.http.get(`${this.apiUrl}/posts/?fields=slug,categories,post_thumbnail,title,date&number=50&page=1`)
+      .pipe(
+        tap(response => console.log('API Response:', response))
+      );
   }
+
 
   getCategories(): Observable<any> {
     return this.http.get(`${this.apiUrl}/categories`);
@@ -23,6 +28,9 @@ export class PostService {
   }
 
   getPostsByCategory(category: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/posts/?category=${category}&fields=slug,categories,post_thumbnail,title,date&number=20&page=1`);
+    return this.http.get(`${this.apiUrl}/posts/?category=${category}&fields=slug,categories,post_thumbnail,title,date&number=20&page=1`)
+      .pipe(
+        tap(response => console.log('API Response for Category:', response))
+      );
   }
 }

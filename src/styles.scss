@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+.custom-dropdown .p-dropdown {
+    width: 200px;
+
+    /* Adjust the width as needed */
+    .p-dropdown-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.custom-dropdown .p-dropdown-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

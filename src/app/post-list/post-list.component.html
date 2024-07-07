@@ -1,17 +1,28 @@
 <div class="container">
-    <h1>Truecaller Blog</h1>
+    <h1>Latest articles</h1>
     <select [(ngModel)]="selectedCategory" (change)="onCategoryChange($event)">
+        <option value="">All Categories</option>
         <option *ngFor="let category of categories" [value]="category.slug">{{ category.name }}</option>
     </select>
 
+    <div class="dropdown-space"></div>
+
     <div class="post-list">
-        <div *ngFor="let post of posts" class="post-card">
+        <div *ngFor="let post of displayedPosts" class="post-card">
             <h2>{{ post.title }}</h2>
             <p>{{ post.date ? (post.date | date:'short') : 'No Date Available' }}</p>
             <img *ngIf="post.post_thumbnail" [src]="post.post_thumbnail.URL" alt="Post Thumbnail">
             <p *ngIf="post.categories && post.categories.length">{{ post.categories.join(', ') }}</p>
-            <p *ngIf="!post.categories || !post.categories.length">No categories</p>
+            <p *ngIf="!post.categories || !post.categories.length"></p>
             <button (click)="viewPost(post.slug)">Read More</button>
         </div>
+    </div>
+
+    <div class="dropdown-space"></div>
+
+    <div class="pagination">
+        <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage <= 1">Previous</button>
+        <span>Page {{currentPage}} of {{totalPages}}</span>
+        <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage >= totalPages">Next</button>
     </div>
 </div>
