@@ -1,83 +1,84 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { PostService } from '../post.service';
-
-interface Post {
-  title: string;
-  date: string;
-  post_thumbnail?: {
-    URL: string;
-  };
-  categories: string[];
-  slug: string;
-}
-
-interface Category {
-  name: string;
-  slug: string;
-}
 
 @Component({
   selector: 'app-post-list',
-  templateUrl: './post-list.component.html',
-  styleUrls: ['./post-list.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, DatePipe]
+  imports: [CommonModule, FormsModule], // Add FormsModule here
+  templateUrl: './post-list.component.html',
+  styleUrls: ['./post-list.component.scss']
 })
 export class PostListComponent implements OnInit {
-  posts: Post[] = [];
-  displayedPosts: Post[] = [];
-  categories: Category[] = [];
+  posts: any[] = [];
+  categories: any[] = [];
   selectedCategory: string = '';
-  currentPage = 1;
-  pageSize = 20;
-  totalRecords = 0;
+  currentPage: number = 1;
+  pageSize: number = 20;
+  totalRecords: number = 0;
+  displayedPosts: any[] = [];
+  totalPages: number = 1;
 
   constructor(private postService: PostService, private router: Router) { }
 
-  ngOnInit() {
-    this.loadPosts();
-    this.postService.getCategories().subscribe(data => {
-      this.categories = data.categories.map((category: any) => ({ name: category.name, slug: category.slug }));
-    });
+  ngOnInit(): void {
+    this.fetchPosts();
+    this.fetchCategories();
   }
 
-  get totalPages(): number {
-    return Math.ceil(this.totalRecords / this.pageSize);
-  }
-
-  loadPosts() {
-    this.postService.getPosts().subscribe(data => {
+  fetchPosts(page: number = 1): void {
+    this.postService.getPosts(page).subscribe((data: any) => {
       this.posts = data.posts;
-      this.totalRecords = data.found;
+      this.totalRecords = data.total;
+      this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
       this.updateDisplayedPosts();
     });
   }
 
-  updateDisplayedPosts() {
-    const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    this.displayedPosts = this.posts.slice(start, end);
+  fetchCategories(): void {
+    this.postService.getCategories().subscribe((data: any) => {
+      this.categories = data.categories;
+    });
   }
 
-  onCategoryChange(event: any) {
-    this.currentPage = 1;
-    if (this.selectedCategory) {
-      this.postService.getPostsByCategory(this.selectedCategory).subscribe(data => {
+  onCategoryChange(event: any): void {
+    const category = event.target.value;
+    this.selectedCategory = category;
+    if (category) {
+      this.postService.getPostsByCategory(category).subscribe((data: any) => {
         this.posts = data.posts;
-        this.totalRecords = data.found;
+        this.totalRecords = data.total;
+        this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
+        this.currentPage = 1;
         this.updateDisplayedPosts();
       });
     } else {
-      this.loadPosts();
+      this.fetchPosts();
     }
   }
 
-  onPageChange(page: number) {
-    this.currentPage = page;
-    this.updateDisplayedPosts();
+  onPageChange(page: number): void {
+    if (page > 0 && page <= this.totalPages) {
+      this.currentPage = page;
+      if (this.selectedCategory) {
+        this.postService.getPostsByCategory(this.selectedCategory, page).subscribe((data: any) => {
+          this.posts = data.posts;
+          this.totalRecords = data.total;
+          this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
+          this.updateDisplayedPosts();
+        });
+      } else {
+        this.fetchPosts(page);
+      }
+    }
+  }
+
+  updateDisplayedPosts(): void {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.displayedPosts = this.posts;
   }
 
   viewPost(slug: string): void {

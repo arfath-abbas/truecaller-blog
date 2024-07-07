@@ -1,16 +1,38 @@
-.custom-dropdown .p-dropdown {
-    width: 200px;
+body {
+    padding-top: 70px;
+}
 
-    /* Adjust the width as needed */
-    .p-dropdown-label {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+.hero-section {
+    position: relative;
+    margin-top: 60px; // Adjust to match the height of the fixed header
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+
+    .hero-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        text-align: center;
+
+        h1 {
+            font-size: 3rem;
+            margin: 0;
+        }
     }
 }
 
-.custom-dropdown .p-dropdown-trigger {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #112a62;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    z-index: 1000;
 }

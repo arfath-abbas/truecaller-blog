@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +11,14 @@ export class PostService {
 
   constructor(private http: HttpClient) { }
 
-  getPosts(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/posts/?fields=slug,categories,post_thumbnail,title,date&number=50&page=1`)
-      .pipe(
-        tap(response => console.log('API Response:', response))
-      );
+  getPosts(page: number = 1): Observable<any> {
+    return this.http.get(`${this.apiUrl}/posts/?fields=slug,categories,post_thumbnail,title,date&number=20&page=${page}`).pipe(
+      map((response: any) => ({
+        posts: response.posts,
+        total: response.found // Assuming 'found' contains the total number of posts
+      }))
+    );
   }
-
 
   getCategories(): Observable<any> {
     return this.http.get(`${this.apiUrl}/categories`);
@@ -27,10 +28,12 @@ export class PostService {
     return this.http.get(`${this.apiUrl}/posts/slug:${slug}?fields=featured_image,title,author,content,date`);
   }
 
-  getPostsByCategory(category: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/posts/?category=${category}&fields=slug,categories,post_thumbnail,title,date&number=20&page=1`)
-      .pipe(
-        tap(response => console.log('API Response for Category:', response))
-      );
+  getPostsByCategory(category: string, page: number = 1): Observable<any> {
+    return this.http.get(`${this.apiUrl}/posts/?category=${category}&fields=slug,categories,post_thumbnail,title,date&number=20&page=${page}`).pipe(
+      map((response: any) => ({
+        posts: response.posts,
+        total: response.found // Assuming 'found' contains the total number of posts
+      }))
+    );
   }
 }
