@@ -6,7 +6,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 This project is a blog application built with Angular. The application fetches and displays blog posts from a WordPress API. Users can browse the latest articles, filter them by categories, and navigate to individual post details.
 Project is live & deployed at vercel 
-```https://truecaller-blog-psi.vercel.app/```
+https://truecaller-blog-psi.vercel.app/
 
 ## Features:
 
